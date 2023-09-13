@@ -1,19 +1,24 @@
 import React, { useContext } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Pressable } from "react-native";
 import { useLeaderBoard } from "../api/User/UserService";
 import { AuthenticationContext } from "../providers/AuthenticationProvider";
 import User from "../models/User";
 import Colors from "../constants/Colors";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 interface LeaderboardRowProps {
   user: User;
 }
 
 const LeaderboardRow = ({ user }: LeaderboardRowProps) => {
+  const { navigate } =
+    useNavigation<NavigationProp<{ LeaderboardEntry: { user: User } }>>();
+
   if (!user) return null;
 
   return (
-    <View
+    <Pressable
+      onPress={() => navigate("LeaderboardEntry", { user })}
       style={{
         padding: 8,
         paddingLeft: 32,
@@ -31,19 +36,26 @@ const LeaderboardRow = ({ user }: LeaderboardRowProps) => {
       key={user.id}
     >
       <Text style={{ color: Colors.primary, fontWeight: "500" }}>
-        {user.position ?? ""}
+        {`#${user.position ?? ""}`}
       </Text>
       <Text
-        style={{ color: Colors.primary, fontWeight: "500", marginLeft: -32 }}
+        style={{
+          color: Colors.primary,
+          fontWeight: "500",
+          textAlign: "center",
+        }}
       >
         {user.username}
       </Text>
-      <Text></Text>
-    </View>
+      <Text style={{ marginRight: 8 }}>{user.score}</Text>
+    </Pressable>
   );
 };
 
 const LeaderboardScreen = () => {
+  const { navigate } =
+    useNavigation<NavigationProp<{ LeaderboardEntry: { user: User } }>>();
+
   const { username } = useContext(AuthenticationContext);
   const { leaderboard } = useLeaderBoard(username);
 
@@ -80,8 +92,26 @@ const LeaderboardScreen = () => {
           renderItem={(user) => <LeaderboardRow user={user.item} />}
         />
       )}
-      {!isCurrentUserLeader ? (
-        <>
+
+      <Pressable
+        onPress={() => navigate("LeaderboardEntry", { user: leaderboard.me })}
+        style={{ alignItems: "center" }}
+      >
+        {!isCurrentUserLeader ? (
+          <>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 18,
+                fontWeight: "800",
+                paddingBottom: 16,
+              }}
+            >
+              Your ranking
+            </Text>
+            <LeaderboardRow user={leaderboard.me} />
+          </>
+        ) : (
           <Text
             style={{
               color: "white",
@@ -90,11 +120,10 @@ const LeaderboardScreen = () => {
               paddingBottom: 16,
             }}
           >
-            Your ranking
+            You are number {leaderboard.me.position}
           </Text>
-          <LeaderboardRow user={leaderboard.me} />
-        </>
-      ) : (
+        )}
+
         <Text
           style={{
             color: "white",
@@ -103,20 +132,9 @@ const LeaderboardScreen = () => {
             paddingBottom: 16,
           }}
         >
-          You are number {leaderboard.me.position}
+          Keep up the good work!
         </Text>
-      )}
-
-      <Text
-        style={{
-          color: "white",
-          fontSize: 18,
-          fontWeight: "800",
-          paddingBottom: 16,
-        }}
-      >
-        Keep up the good work!
-      </Text>
+      </Pressable>
     </View>
   );
 };

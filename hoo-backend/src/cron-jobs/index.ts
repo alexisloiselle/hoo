@@ -46,10 +46,10 @@ export const initCronJobs = () => {
     await prisma.$disconnect();
 
     const almostOutAiBody = await GptService.prompt(
-      "Generate a motivational message to encourage drinking water."
+      "Generate a very short motivational message to encourage drinking water."
     );
     const outAiBody = await GptService.prompt(
-      "Generate a pressing message to force drinking water."
+      "Generate a very short pressing message to force drinking water."
     );
 
     await NotificationsService.sendNotifications(

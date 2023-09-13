@@ -10,7 +10,9 @@ const PosoFormScreen = () => {
   const [region, setRegion] = useState<string>("");
   const [age, setAge] = useState<number>(0);
   const [weight, setWeight] = useState<number>(125);
-  const [gender, setGender] = useState<"male" | "female" | "other">("female");
+  const [gender, setGender] = useState<"MALE" | "FEMALE" | "IN_BETWEEN">(
+    "FEMALE"
+  );
   const [activityLevel, setActivityLevel] = useState<"LOW" | "MEDIUM" | "HIGH">(
     "LOW"
   );
@@ -85,15 +87,15 @@ const PosoFormScreen = () => {
           maximumTrackTintColor={Colors.lightPrimary}
           thumbTintColor={Colors.accent}
         />
-        <Text>{weight} demi-dictionnaires</Text>
+        <Text>{weight} demi-dictionaries</Text>
 
         <Picker
           selectedValue={gender}
           onValueChange={(genderValue) => setGender(genderValue)}
         >
-          <Picker.Item label="Female" value="female" />
-          <Picker.Item label="Male" value="male" />
-          <Picker.Item label="other" value="other" />
+          <Picker.Item label="Female" value="FEMALE" />
+          <Picker.Item label="Male" value="MALE" />
+          <Picker.Item label="Other" value="IN_BETWEEN" />
         </Picker>
 
         <Picker

@@ -28,12 +28,20 @@ export interface usersHydrationHook {
   updateHydration: () => void;
 }
 
+interface bioHook {
+  bio?: string;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+}
+
 export const GET_USER_QUERY_KEY = "getUser";
 export const GET_LEADERBOARD_QUERY_KEY = "getLeaderboard";
 export const POST_HYDRATION_QUERY_KEY = "postHydration";
 export const POST_CREATE_USER_QUERY_KEY = "postCreateUser";
 export const POST_DELETE_USER_QUERY_KEY = "deleteUser";
 export const PATCH_USER_QUERY_KEY = "patchUser";
+export const GET_BIO_QUERY_KEY = "getBio";
 
 export const useUser = (userName: string): userHook => {
   const { data, isLoading, isError, isSuccess } = useQuery(
@@ -141,5 +149,21 @@ export const useUpdateUser = (
 
   return {
     updateUser: mutate,
+  };
+};
+
+export const useBio = (username: string): bioHook => {
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    [GET_BIO_QUERY_KEY, username],
+    async () => {
+      return UserClient.getBio(username);
+    }
+  );
+
+  return {
+    bio: data?.bio,
+    isLoading,
+    isError,
+    isSuccess,
   };
 };

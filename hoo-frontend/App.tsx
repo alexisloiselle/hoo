@@ -1,6 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import ProfileScreen from "./screens/Profile";
@@ -14,7 +15,9 @@ import OwlSvg from "./components/OwlSvg";
 import ProfileSvg from "./components/ProfileSvg";
 import LeaderboardSvg from "./components/LeadeboardSvg";
 import Colors from "./constants/Colors";
+import { LeaderboardEntry } from "./screens/LeaderboardEntry";
 
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const queryClient = new QueryClient();
 const CommonTabBarOptions = {
@@ -22,6 +25,25 @@ const CommonTabBarOptions = {
   tabBarInactiveTintColor: Colors.neutral,
   tabBarActiveBackgroundColor: Colors.lightPrimary,
   tabBarInactiveBackgroundColor: Colors.lightestPrimary,
+};
+
+const LeaderboardStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="LeaderboardLanding"
+        component={LeaderboardScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="LeaderboardEntry"
+        component={LeaderboardEntry}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
 };
 
 const App = () => {
@@ -43,7 +65,7 @@ const App = () => {
               />
               <Tab.Screen
                 name="Leaderboard"
-                component={LeaderboardScreen}
+                component={LeaderboardStack}
                 options={{
                   ...CommonTabBarOptions,
                   tabBarLabel: "Leaderboard",

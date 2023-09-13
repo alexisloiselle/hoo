@@ -1,3 +1,4 @@
+import { Bio } from "../../models/Bio";
 import Leaderboard from "../../models/Leaderboard";
 import User from "../../models/User";
 import HttpClient from "../HttpClient";
@@ -95,6 +96,16 @@ export class UserClient {
     };
 
     const response = await client.patch({ body });
+
+    return response.data;
+  }
+
+  public static async getBio(username: string): Promise<Bio> {
+    const client = new HttpClient({
+      endpoint: `/users/${username}/bio`,
+    });
+
+    const response = await client.get();
 
     return response.data;
   }

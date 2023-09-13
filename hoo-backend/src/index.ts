@@ -185,10 +185,18 @@ app.get("/users/:username/leaderboard", async (req, res) => {
     const { username } = req.params;
 
     const users = await prisma.user.findMany({
-      orderBy: { hydrationPercentage: "desc" },
+      orderBy: { score: "desc" },
     });
 
     const meIndex = users.findIndex((user) => user.username === username);
+
+    const numberOfPeopleBetterThanU = users.reduce((acc, user) => {
+      if (user.id !== users[meIndex].id && user.score > users[meIndex].score) {
+        return acc + 1;
+      }
+
+      return acc;
+    }, 0);
 
     res.json({
       best: users.slice(0, 5).map((user, index) => ({
@@ -198,7 +206,65 @@ app.get("/users/:username/leaderboard", async (req, res) => {
       me: {
         ...computeMl(users[meIndex]),
         position: meIndex + 1,
+        percentile: Number(
+          ((numberOfPeopleBetterThanU / users.length) * 100 + 1).toFixed(0)
+        ),
       },
+    });
+  } catch (e) {
+    console.error(e);
+
+    if (
+      e instanceof PrismaClientValidationError ||
+      e instanceof PrismaClientKnownRequestError
+    ) {
+      return res.status(400).json({ message: e.message });
+    }
+
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+app.get("/users/:username/bio", async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (!user) {
+      return res.status(404).send();
+    }
+
+    let thirstLevel = "He is not thirsty.";
+    if (user.hydrationPercentage === 0) {
+      thirstLevel = "He is completely dehydrated.";
+    } else if (user.hydrationPercentage < 10) {
+      thirstLevel = "He is very thirsty.";
+    } else if (user.hydrationPercentage < 20) {
+      thirstLevel = "He is thirsty.";
+    } else if (user.hydrationPercentage < 50) {
+      thirstLevel = "He is a bit thirsty.";
+    }
+
+    const bio = await GptService.prompt(
+      `
+      Write a short biography for ${username}:
+      
+      This person is ${user.age} years old.
+      He considers his activity level to be ${user.activityLevel}.
+      He weighs ${user.weight} pounds.
+      He lives in ${user.region}.
+      He considers his gender to be ${user.gender}.
+      ${thirstLevel}
+    `,
+      "long"
+    );
+
+    res.json({
+      username,
+      bio,
     });
   } catch (e) {
     console.error(e);
@@ -242,7 +308,7 @@ app.put("/token/:token", async (req, res) => {
 app.get("/qotd", async (_req, res) => {
   try {
     const qotd = await GptService.prompt(
-      "Generate a motivational quote of the to encourage drinking water.",
+      "Generate a short motivational quote of the to encourage drinking water.",
       "long"
     );
     res.json({ qotd });

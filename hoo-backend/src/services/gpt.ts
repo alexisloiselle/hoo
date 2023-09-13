@@ -9,8 +9,17 @@ export class GptService {
       apiUrl,
       {
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: length === "short" ? 10 : 30,
+        messages: [
+          {
+            role: "user",
+            content: `
+          ${prompt}
+
+          Write it as you were a wise owl.
+        `,
+          },
+        ],
+        max_tokens: length === "short" ? 10 : undefined,
       },
       {
         headers: {
