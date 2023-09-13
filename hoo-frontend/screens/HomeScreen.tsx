@@ -18,7 +18,7 @@ const HomeScreen = () => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.ocean,
       }}
     >
       <Qotd />

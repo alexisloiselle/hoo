@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Text, View, TextInput, Button, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  ScrollView,
+  Pressable,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
 import Colors from "../constants/Colors";
@@ -26,7 +33,7 @@ const PosoFormScreen = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: Colors.ocean }}>
       <View
         style={{
           margin: 18,
@@ -36,7 +43,7 @@ const PosoFormScreen = () => {
         <Text
           style={{
             marginBottom: 18,
-            color: Colors.darkGrey,
+            color: Colors.white,
             fontSize: 24,
             fontWeight: "bold",
             textAlign: "center",
@@ -44,33 +51,32 @@ const PosoFormScreen = () => {
         >
           Ta posologie
         </Text>
-
         <TextInput
           style={{
-            borderColor: Colors.grey,
+            borderColor: Colors.deepOcean,
             borderWidth: 1,
             borderRadius: 4,
             padding: 4,
             marginBottom: 18,
+            backgroundColor: Colors.lac,
           }}
           placeholder="Username"
           value={name}
           onChangeText={async (nameValue) => setName(nameValue)}
         />
-
         <TextInput
           style={{
-            borderColor: Colors.grey,
+            borderColor: Colors.deepOcean,
             borderWidth: 1,
             borderRadius: 4,
             padding: 4,
             marginBottom: 18,
+            backgroundColor: Colors.lac,
           }}
           placeholder="Region"
           value={region}
           onChangeText={(regionValue) => setRegion(regionValue)}
         />
-
         <View style={{ display: "flex" }}>
           <Slider
             step={1}
@@ -78,26 +84,36 @@ const PosoFormScreen = () => {
             maximumValue={117}
             value={age}
             onValueChange={(ageValue) => setAge(ageValue)}
-            minimumTrackTintColor={Colors.lightestPrimary}
-            maximumTrackTintColor={Colors.lightPrimary}
-            thumbTintColor={Colors.accent}
+            minimumTrackTintColor={Colors.lac}
+            maximumTrackTintColor={Colors.ruisseau}
+            thumbTintColor={Colors.hibou}
           />
-          <Text>{age} sun revolutions</Text>
+          <Text style={{ color: Colors.white, fontWeight: "500" }}>
+            {age} sun revolutions (yrs)
+          </Text>
         </View>
-
         <Slider
           step={1}
           minimumValue={75}
           maximumValue={325}
           value={weight}
           onValueChange={(weightValue) => setWeight(weightValue)}
-          minimumTrackTintColor={Colors.lightestPrimary}
-          maximumTrackTintColor={Colors.lightPrimary}
-          thumbTintColor={Colors.accent}
+          minimumTrackTintColor={Colors.lac}
+          maximumTrackTintColor={Colors.ruisseau}
+          thumbTintColor={Colors.hibou}
         />
-        <Text>{weight} demi-dictionaries</Text>
-
+        <Text style={{ color: Colors.white, fontWeight: "500" }}>
+          {weight} half-dictionaries (lbs)
+        </Text>
+        <Text style={{ color: Colors.white, fontWeight: "500", marginTop: 16 }}>
+          Gender
+        </Text>
         <Picker
+          style={{
+            backgroundColor: Colors.lac,
+            borderRadius: 16,
+            marginTop: 16,
+          }}
           selectedValue={gender}
           onValueChange={(genderValue) => setGender(genderValue)}
         >
@@ -105,8 +121,15 @@ const PosoFormScreen = () => {
           <Picker.Item label="Male" value="MALE" />
           <Picker.Item label="Other" value="IN_BETWEEN" />
         </Picker>
-
+        <Text style={{ color: Colors.white, fontWeight: "500", marginTop: 16 }}>
+          Level of activity
+        </Text>
         <Picker
+          style={{
+            backgroundColor: Colors.lac,
+            borderRadius: 16,
+            marginTop: 16,
+          }}
           selectedValue={activityLevel}
           onValueChange={(activityValue) => setActivityLevel(activityValue)}
         >
@@ -114,15 +137,29 @@ const PosoFormScreen = () => {
           <Picker.Item label="Medium" value="MEDIUM" />
           <Picker.Item label="High" value="HIGH" />
         </Picker>
-
-        <Button
+        <Pressable
+          style={{
+            backgroundColor: Colors.lac,
+            borderRadius: 16,
+            marginTop: 16,
+            padding: 16,
+          }}
           onPress={() => {
             setUsername(name);
             handleCreate();
           }}
-          title="Start Drinking"
-          color={Colors.darkGrey}
-        />
+        >
+          <Text
+            style={{
+              color: Colors.ocean,
+              fontSize: 24,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Start Drinking
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );

@@ -1,12 +1,11 @@
 const Colors = {
-  primary: "#2a3f5b",
-  lightestPrimary: "#4e92eb",
-  lightPrimary: "#2cbcd4",
-  neutral: "#5a6c68",
-  accent: "#d0a667",
-  lightGrey: "#c5c6d0",
-  grey: "#808080",
-  darkGrey: "#373737"
+  ocean: "#27187E",
+  deepOcean: "#190F54",
+  lac: "#758BFD",
+  riviere: "#AEB8FE",
+  ruisseau: "#F1F2F6",
+  hibou: "#FF8600",
+  white: "#FFFFFF",
 };
 
 export default Colors;

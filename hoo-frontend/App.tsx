@@ -23,10 +23,10 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const queryClient = new QueryClient();
 const CommonTabBarOptions = {
-  tabBarActiveTintColor: Colors.accent,
-  tabBarInactiveTintColor: Colors.neutral,
-  tabBarActiveBackgroundColor: Colors.lightPrimary,
-  tabBarInactiveBackgroundColor: Colors.lightestPrimary,
+  tabBarActiveTintColor: Colors.hibou,
+  tabBarInactiveTintColor: Colors.ruisseau,
+  tabBarActiveBackgroundColor: Colors.deepOcean,
+  tabBarInactiveBackgroundColor: Colors.deepOcean,
 };
 
 const LeaderboardStack = () => {

@@ -26,7 +26,7 @@ const LeaderboardRow = ({ user }: LeaderboardRowProps) => {
         marginBottom: 8,
         width: "100%",
         height: 50,
-        backgroundColor: Colors.lightPrimary,
+        backgroundColor: Colors.lac,
         borderRadius: 8,
         display: "flex",
         alignItems: "center",
@@ -35,12 +35,12 @@ const LeaderboardRow = ({ user }: LeaderboardRowProps) => {
       }}
       key={user.id}
     >
-      <Text style={{ color: Colors.primary, fontWeight: "500" }}>
+      <Text style={{ color: Colors.ocean, fontWeight: "500" }}>
         {`#${user.position ?? ""}`}
       </Text>
       <Text
         style={{
-          color: Colors.primary,
+          color: Colors.ocean,
           fontWeight: "500",
           textAlign: "center",
         }}
@@ -72,7 +72,7 @@ const LeaderboardScreen = () => {
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.ocean,
       }}
     >
       <Text

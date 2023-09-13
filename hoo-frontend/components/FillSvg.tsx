@@ -25,7 +25,7 @@ const CustomFillSvg = ({ currentValue, maxValue, width, height }) => {
     return {
       width,
       height: withTiming(fillHeight.value, { duration: 500 }),
-      backgroundColor: Colors.primary,
+      backgroundColor: Colors.riviere,
       position: "absolute",
       top: 0,
     };
@@ -104,7 +104,7 @@ const CustomFillSvg = ({ currentValue, maxValue, width, height }) => {
           style={{
             width,
             height,
-            backgroundColor: Colors.lightPrimary,
+            backgroundColor: Colors.hibou,
             position: "absolute",
             top: 0,
           }}
