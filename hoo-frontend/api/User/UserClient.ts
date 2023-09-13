@@ -46,18 +46,19 @@ export class UserClient {
     return response.data;
   }
 
-  public static async postHydration(username: string): Promise<User> {
+  public static async postHydration(
+    username: string,
+    hydrationPercentage: number
+  ): Promise<void> {
     const client = new HttpClient({
       endpoint: `/users/${username}/hydration`,
     });
 
     const body = {
-      username,
+      hydrationPercentage,
     };
 
-    const response = await client.post({ body });
-
-    return response.data;
+    await client.post({ body });
   }
 
   public static async deleteUser(username: string): Promise<User> {

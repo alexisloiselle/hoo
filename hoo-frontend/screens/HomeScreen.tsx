@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
-import HydrationIndicator from "../components/HydrationIndicator";
+import HydrationIndicator, {
+  HydrationIndicatorPlaceholder,
+} from "../components/HydrationIndicator";
 import Colors from "../constants/Colors";
+import { AuthenticationContext } from "../providers/AuthenticationProvider";
+import { useUser } from "../api/User/UserService";
+import FillSvg from "../components/FillSvg";
 
 const HomeScreen = () => {
+  const { username } = useContext(AuthenticationContext);
+  const { user, isLoading } = useUser(username);
+
   return (
     <View
       style={{
@@ -13,7 +21,11 @@ const HomeScreen = () => {
         backgroundColor: Colors.primary,
       }}
     >
-      <HydrationIndicator />
+      {!isLoading ? (
+        <HydrationIndicator user={user} />
+      ) : (
+        <HydrationIndicatorPlaceholder />
+      )}
     </View>
   );
 };

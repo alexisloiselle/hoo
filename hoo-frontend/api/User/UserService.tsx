@@ -1,5 +1,5 @@
 import { UserClient } from "./UserClient";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import User from "../../models/User";
 
 export interface userHook {
@@ -14,6 +14,10 @@ export interface usersHook {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
+}
+
+export interface usersHydrationHook {
+  updateHydration: () => void;
 }
 
 export const GET_USER_QUERY_KEY = "getUser";
@@ -77,19 +81,19 @@ export const useCreateUser = (
   };
 };
 
-export const useHydration = (username: string): userHook => {
-  const { data, isLoading, isError, isSuccess } = useQuery(
+export const useHydration = (
+  username: string,
+  hydrationPercentage: number
+): usersHydrationHook => {
+  const { mutate } = useMutation(
     [POST_HYDRATION_QUERY_KEY, username],
     async () => {
-      return UserClient.postHydration(username);
+      return UserClient.postHydration(username, hydrationPercentage);
     }
   );
 
   return {
-    user: data,
-    isLoading,
-    isError,
-    isSuccess,
+    updateHydration: mutate,
   };
 };
 

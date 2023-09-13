@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   TouchableOpacity,
   View,
@@ -7,13 +7,35 @@ import {
 } from "react-native";
 import FillSvg from "../components/FillSvg";
 import Colors from "../constants/Colors";
+import User from "../models/User";
+import { useDebounce } from "use-debounce";
+import { useHydration } from "../api/User/UserService";
 
 const sipSize = 50;
 
-const HydrationIndicator = () => {
+interface Props {
+  user: User;
+}
+
+const HydrationIndicator = ({ user }: Props) => {
   const timer = useRef(null);
-  const [currentValue, setCurrentValue] = useState(1000);
-  const maxValue = 2000;
+  const [currentValue, setCurrentValue] = useState(user.currentMlLevel);
+  const maxValue = user.goalMlPerDay;
+  const [debouncedCurrentValue] = useDebounce(currentValue, 3000);
+  const { updateHydration } = useHydration(
+    user.username,
+    (currentValue / maxValue) * 100
+  );
+
+  useEffect(() => {
+    if (debouncedCurrentValue != user.currentMlLevel) {
+      updateHydration();
+    }
+  }, [debouncedCurrentValue]);
+
+  useEffect(() => {
+    setCurrentValue(user?.currentMlLevel);
+  }, [user]);
 
   const addOne = () => {
     setCurrentValue((prevValue) => {
@@ -35,35 +57,56 @@ const HydrationIndicator = () => {
         justifyContent: "center",
       }}
     >
-      <Text>{`Your body is missing ${
-        maxValue - currentValue
-      }ml of water`}</Text>
-      <TouchableWithoutFeedback onPressIn={addOne} onPressOut={stopTimer}>
-        <View
+      <>
+        <Text
           style={{
-            width: 300,
-            height: 300,
-            borderRadius: 999,
-            backgroundColor: Colors.lightestPrimary,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            color: "white",
+            fontSize: 18,
+            fontWeight: "800",
+            paddingBottom: 16,
           }}
-        >
-          <FillSvg
-            currentValue={currentValue}
-            maxValue={maxValue}
-            width={200}
-            height={200}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-
-      <TouchableOpacity onPress={() => setCurrentValue(0)}>
-        <Text>Reset</Text>
-      </TouchableOpacity>
+        >{`Your body is missing ${maxValue - currentValue}ml of water!`}</Text>
+        <TouchableWithoutFeedback onPressIn={addOne} onPressOut={stopTimer}>
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              borderRadius: 999,
+              backgroundColor: Colors.lightestPrimary,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FillSvg
+              currentValue={currentValue}
+              maxValue={maxValue}
+              width={200}
+              height={200}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      </>
     </View>
   );
 };
+
+export function HydrationIndicatorPlaceholder() {
+  return (
+    <View
+      style={{
+        width: 300,
+        height: 300,
+        borderRadius: 999,
+        backgroundColor: Colors.lightestPrimary,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <FillSvg currentValue={0} maxValue={1} width={200} height={200} />
+    </View>
+  );
+}
 
 export default HydrationIndicator;
