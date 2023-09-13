@@ -2,11 +2,13 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { QueryClient, QueryClientProvider } from "react-query";
+
 import ProfileScreen from "./screens/Profile";
 import HomeScreen from "./screens/HomeScreen";
 import LeaderboardScreen from "./screens/Leaderboard";
 import AuthenticationProvider from "./providers/AuthenticationProvider";
 import { NotificationsProvider } from "./providers/notifications";
+import PosoFormScreen from "./screens/PosoForm";
 
 import OwlSvg from "./components/OwlSvg";
 import ProfileSvg from "./components/ProfileSvg";
@@ -43,7 +45,7 @@ const App = () => {
                 component={LeaderboardScreen}
                 options={{
                   ...CommonTabBarOptions,
-                  tabBarLabel: "Home",
+                  tabBarLabel: "Leaderboard",
                   tabBarIcon: ({ color }) => (
                     <LeaderboardSvg color={color} size={25} />
                   ),
@@ -54,7 +56,18 @@ const App = () => {
                 component={ProfileScreen}
                 options={{
                   ...CommonTabBarOptions,
-                  tabBarLabel: "Home",
+                  tabBarLabel: "Profile",
+                  tabBarIcon: ({ color }) => (
+                    <ProfileSvg color={color} size={25} />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Poso"
+                component={PosoFormScreen}
+                options={{
+                  ...CommonTabBarOptions,
+                  tabBarLabel: "Poso",
                   tabBarIcon: ({ color }) => (
                     <ProfileSvg color={color} size={25} />
                   ),
