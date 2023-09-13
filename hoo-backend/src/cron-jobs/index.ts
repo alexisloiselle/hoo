@@ -1,14 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import CronJob from "node-cron";
 import { Message, NotificationsService } from "../services/notifications";
+import { GptService } from "../services/gpt";
 
 export const initCronJobs = () => {
-  const cron = CronJob.schedule("0,15,30,45,59 8-20 * * *", async () => {
+  const cron = CronJob.schedule("0,15,30,45 8-20 * * *", async () => {
     const prisma = new PrismaClient();
 
     const users = await prisma.user.findMany();
 
-    let messages: Message[] = [];
+    let messages: (Message & { isOut: boolean })[] = [];
     for (const user of users) {
       const newHydrationPercentage = Math.min(
         100,
@@ -20,7 +21,8 @@ export const initCronJobs = () => {
           messages.push({
             to: user.token,
             body: "You're almost out of water in your body!",
-            title: "HEY! DRINK SOME WATER!",
+            title: "Hoo hoo!",
+            isOut: false,
           });
         }
 
@@ -28,7 +30,8 @@ export const initCronJobs = () => {
           messages.push({
             to: user.token,
             body: "You're out of water in your body!",
-            title: "HEY! DRINK SOME WATER!",
+            title: "Hoo hoo!",
+            isOut: true,
           });
         }
       }
@@ -41,7 +44,21 @@ export const initCronJobs = () => {
       });
     }
     await prisma.$disconnect();
-    await NotificationsService.sendNotifications(messages);
+
+    const almostOutAiBody = await GptService.prompt(
+      "Generate a motivational message to encourage drinking water."
+    );
+    const outAiBody = await GptService.prompt(
+      "Generate a pressing message to force drinking water."
+    );
+
+    await NotificationsService.sendNotifications(
+      messages.map((m) => ({
+        ...m,
+        isOut: undefined,
+        body: m.isOut ? outAiBody : almostOutAiBody,
+      }))
+    );
   });
 
   cron.start();

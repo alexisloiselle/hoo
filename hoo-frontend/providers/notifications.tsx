@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Platform } from "react-native";
 
 import { AuthenticationContext } from "./AuthenticationProvider";
-import { Token } from "../api/User/Token";
+import { TokenClient } from "../api/Token/TokenClient";
 
 export const NotificationsContext = createContext({ token: null });
 
@@ -71,7 +71,7 @@ export const NotificationsProvider = ({ children }) => {
   useEffect(() => {
     const sendToken = async (newToken: string, newUsername: string) => {
       try {
-        await Token.putToken(newToken, newUsername);
+        await TokenClient.putToken(newToken, newUsername);
       } catch (e) {
         console.error(JSON.stringify(e.response.data));
       }

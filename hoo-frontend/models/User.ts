@@ -14,6 +14,7 @@ interface User {
   goalMlPerDay: number;
   currentMlLevel: number;
   percentile: number;
+  position?: number;
 }
 
 export default User;

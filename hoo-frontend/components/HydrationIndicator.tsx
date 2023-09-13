@@ -65,7 +65,9 @@ const HydrationIndicator = ({ user }: Props) => {
             fontWeight: "800",
             paddingBottom: 16,
           }}
-        >{`Your body is missing ${maxValue - currentValue}ml of water!`}</Text>
+        >{`Your body is missing ${(maxValue - currentValue).toFixed(
+          0
+        )}ml of water!`}</Text>
         <TouchableWithoutFeedback onPressIn={addOne} onPressOut={stopTimer}>
           <View
             style={{
