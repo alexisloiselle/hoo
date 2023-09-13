@@ -23,7 +23,7 @@ class Client {
   constructor({ endpoint, token }: Url) {
     this.token = token
     this.endpoint = endpoint
-    this.instance = axios.create({ baseURL: 'https://cat-fact.herokuapp.com/' })
+    this.instance = axios.create({ baseURL: 'https://d024-69-156-9-82.ngrok-free.app/' })
   }
 
   public async get({ params }: Params = {}): Promise<AxiosResponse> {

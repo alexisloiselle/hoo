@@ -10,13 +10,14 @@ export interface userHook {
 }
 
 export const GET_USER_QUERY_KEY = 'getUser'
+export const GET_LEADERBOARD_QUERY_KEY = 'getLeaderboard'
 
-const useUser = (id: number): userHook => {
+export const useUser = (userName: string): userHook => {
   const { data, isLoading, isError, isSuccess } = useQuery(
-    [GET_USER_QUERY_KEY, id],
+    [GET_USER_QUERY_KEY, userName],
     async () => {
       return User.getUser(
-        id,
+        userName,
       )
     },
   )
@@ -29,7 +30,25 @@ const useUser = (id: number): userHook => {
   }
 }
 
-export default useUser
+export const useLeaderBoard = (userName: string): userHook => {
+    const { data, isLoading, isError, isSuccess } = useQuery(
+      [GET_LEADERBOARD_QUERY_KEY, userName],
+      async () => {
+        return User.getLeaderboard(
+          userName,
+        )
+      },
+    )
+  
+    return {
+      user: data,
+      isLoading,
+      isError,
+      isSuccess,
+    }
+  }
+
+
 
 
 

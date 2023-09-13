@@ -1,22 +1,27 @@
 
 import HttpClient from './HttpClient'
 
-
 export class User {
   public static async getUser(
-    id: number,
+    userName: string,
   ): Promise<any> {
     const client = new HttpClient({
-      endpoint: 'facts/',
+      endpoint: `/users/${userName}`,
     })
 
-    const params = {
-        id
-    }
+    const response = await client.get()
 
-    const response = await client.get({
-     // params: params,
+    return response.data
+  }
+
+  public static async getLeaderboard(
+    userName: string,
+  ): Promise<any> {
+    const client = new HttpClient({
+      endpoint: `/users/${userName}/leaderboard`,
     })
+
+    const response = await client.get()
 
     return response.data
   }
