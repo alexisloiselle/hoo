@@ -75,26 +75,24 @@ export const useLeaderBoard = (userName: string): leaderboardHook => {
   };
 };
 
+interface createUserHook {
+  createUser: () => void;
+}
+
 export const useCreateUser = (
   username: string,
   age: number,
   gender: string,
   weight: number,
   region: string
-): userHook => {
-  const { data, isLoading, isError, isSuccess } = useQuery(
+): createUserHook => {
+  const { mutate, error } = useMutation(
     [POST_CREATE_USER_QUERY_KEY, username, age, gender, weight, region],
     async () => {
       return UserClient.postCreateUser(username, age, gender, weight, region);
     }
   );
-
-  return {
-    user: data,
-    isLoading,
-    isError,
-    isSuccess,
-  };
+  return { createUser: mutate };
 };
 
 export const useHydration = (

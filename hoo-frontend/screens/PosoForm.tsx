@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Text, View, TextInput, Button } from "react-native";
+import React, { useState, useContext } from "react";
+import { Text, View, TextInput, Button, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
 import Colors from "../constants/Colors";
+import { AuthenticationContext } from "../providers/AuthenticationProvider";
 import { useCreateUser } from "../api/User/UserService";
 
 const PosoFormScreen = () => {
@@ -17,8 +18,15 @@ const PosoFormScreen = () => {
     "LOW"
   );
 
+  const { setUsername } = useContext(AuthenticationContext);
+  const { createUser } = useCreateUser(name, age, gender, weight, region);
+
+  const handleCreate = () => {
+    createUser();
+  };
+
   return (
-    <View>
+    <ScrollView>
       <View
         style={{
           margin: 18,
@@ -47,7 +55,7 @@ const PosoFormScreen = () => {
           }}
           placeholder="Username"
           value={name}
-          onChangeText={(nameValue) => setName(nameValue)}
+          onChangeText={async (nameValue) => setName(nameValue)}
         />
 
         <TextInput
@@ -109,13 +117,14 @@ const PosoFormScreen = () => {
 
         <Button
           onPress={() => {
-            console.log(name, age, gender, weight, region);
+            setUsername(name);
+            handleCreate();
           }}
-          title="Choose Your Character"
+          title="Start Drinking"
           color={Colors.darkGrey}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

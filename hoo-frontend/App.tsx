@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -16,6 +16,7 @@ import ProfileSvg from "./components/ProfileSvg";
 import LeaderboardSvg from "./components/LeadeboardSvg";
 import Colors from "./constants/Colors";
 import { LeaderboardEntry } from "./screens/LeaderboardEntry";
+import { AuthenticationContext } from "./providers/AuthenticationProvider";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,58 +51,54 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthenticationProvider>
-        <NotificationsProvider>
-          <NavigationContainer>
-            <Tab.Navigator initialRouteName="Home">
-              <Tab.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                  ...CommonTabBarOptions,
-                  headerShown: false,
-                  tabBarLabel: "Home",
-                  tabBarIcon: ({ color }) => <OwlSvg color={color} size={25} />,
-                }}
-              />
-              <Tab.Screen
-                name="Leaderboard"
-                component={LeaderboardStack}
-                options={{
-                  ...CommonTabBarOptions,
-                  tabBarLabel: "Leaderboard",
-                  tabBarIcon: ({ color }) => (
-                    <LeaderboardSvg color={color} size={25} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Profile"
-                component={ProfileScreen}
-                options={{
-                  ...CommonTabBarOptions,
-                  tabBarLabel: "Profile",
-                  tabBarIcon: ({ color }) => (
-                    <ProfileSvg color={color} size={25} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Poso"
-                component={PosoFormScreen}
-                options={{
-                  ...CommonTabBarOptions,
-                  headerShown: false,
-                  tabBarLabel: "Poso",
-                  tabBarIcon: ({ color }) => (
-                    <ProfileSvg color={color} size={25} />
-                  ),
-                }}
-              />
-            </Tab.Navigator>
-          </NavigationContainer>
-        </NotificationsProvider>
+        <AppContainer />
       </AuthenticationProvider>
     </QueryClientProvider>
+  );
+};
+
+const AppContainer = () => {
+  const { username } = useContext(AuthenticationContext);
+  console.log(username);
+  return username ? (
+    <NotificationsProvider>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="Home">
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              ...CommonTabBarOptions,
+              headerShown: false,
+              tabBarLabel: "Home",
+              tabBarIcon: ({ color }) => <OwlSvg color={color} size={25} />,
+            }}
+          />
+          <Tab.Screen
+            name="Leaderboard"
+            component={LeaderboardScreen}
+            options={{
+              ...CommonTabBarOptions,
+              tabBarLabel: "Leaderboard",
+              tabBarIcon: ({ color }) => (
+                <LeaderboardSvg color={color} size={25} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              ...CommonTabBarOptions,
+              tabBarLabel: "Profile",
+              tabBarIcon: ({ color }) => <ProfileSvg color={color} size={25} />,
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </NotificationsProvider>
+  ) : (
+    <PosoFormScreen />
   );
 };
 

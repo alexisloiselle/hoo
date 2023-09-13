@@ -4,12 +4,14 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
+  Button,
 } from "react-native";
 import FillSvg from "../components/FillSvg";
 import Colors from "../constants/Colors";
 import User from "../models/User";
 import { useDebounce } from "use-debounce";
 import { useHydration } from "../api/User/UserService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const sipSize = 50;
 
@@ -19,16 +21,16 @@ interface Props {
 
 const HydrationIndicator = ({ user }: Props) => {
   const timer = useRef(null);
-  const [currentValue, setCurrentValue] = useState(user.currentMlLevel);
-  const maxValue = user.goalMlPerDay;
+  const [currentValue, setCurrentValue] = useState(user?.currentMlLevel);
+  const maxValue = user?.goalMlPerDay;
   const [debouncedCurrentValue] = useDebounce(currentValue, 3000);
   const { updateHydration } = useHydration(
-    user.username,
+    user?.username,
     (currentValue / maxValue) * 100
   );
 
   useEffect(() => {
-    if (debouncedCurrentValue != user.currentMlLevel) {
+    if (debouncedCurrentValue != user?.currentMlLevel) {
       updateHydration();
     }
   }, [debouncedCurrentValue]);
