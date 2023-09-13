@@ -121,24 +121,25 @@ export const useDeleteUser = (username: string): userHook => {
   };
 };
 
+interface updateUserHook {
+  updateUser: () => void;
+}
+
 export const useUpdateUser = (
   username: string,
   age: number,
   gender: string,
   weight: number,
   region: string
-): userHook => {
-  const { data, isLoading, isError, isSuccess } = useQuery(
+): updateUserHook => {
+  const { mutate, error } = useMutation(
     [PATCH_USER_QUERY_KEY, username, age, gender, weight, region],
     async () => {
-      return UserClient.postCreateUser(username, age, gender, weight, region);
+      return UserClient.patchUser(username, age, gender, weight, region);
     }
   );
 
   return {
-    user: data,
-    isLoading,
-    isError,
-    isSuccess,
+    updateUser: mutate,
   };
 };
