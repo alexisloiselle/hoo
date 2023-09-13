@@ -61,7 +61,7 @@ export const NotificationsProvider = ({ children }) => {
         setToken(fcmToken);
       } catch (e) {
         console.log(e);
-        console.error(JSON.stringify(e.response.data));
+        console.error(JSON.stringify(e.response?.data));
       }
     };
 
@@ -73,7 +73,7 @@ export const NotificationsProvider = ({ children }) => {
       try {
         await TokenClient.putToken(newToken, newUsername);
       } catch (e) {
-        console.error(JSON.stringify(e.response.data));
+        console.error(JSON.stringify(e.response?.data));
       }
     };
 

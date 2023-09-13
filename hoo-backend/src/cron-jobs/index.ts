@@ -4,7 +4,7 @@ import { Message, NotificationsService } from "../services/notifications";
 import { GptService } from "../services/gpt";
 
 export const initCronJobs = () => {
-  const cron = CronJob.schedule("0,15,30,45 8-20 * * *", async () => {
+  const cron = CronJob.schedule("* * * * *", async () => {
     const prisma = new PrismaClient();
 
     const users = await prisma.user.findMany();

@@ -15,7 +15,7 @@ export const AuthenticationContext =
   createContext<AuthenticationProviderState>(initialState);
 
 const AuthenticationProvider = ({ children }) => {
-  const [username, setUsername] = useState<string | undefined>("dragon");
+  const [username, setUsername] = useState<string | undefined>();
 
   const fonction = async (username) => {
     setUsername(username);

@@ -77,7 +77,7 @@ const AppContainer = () => {
           />
           <Tab.Screen
             name="Leaderboard"
-            component={LeaderboardScreen}
+            component={LeaderboardStack}
             options={{
               ...CommonTabBarOptions,
               tabBarLabel: "Leaderboard",
