@@ -44,7 +44,7 @@ export const useUser = (userName: string): userHook => {
 };
 
 export const useLeaderBoard = (userName: string): usersHook => {
-  const { data, isLoading, isError, isSuccess } = useQuery(
+  const { data, isLoading, isError, isSuccess } = useMutation(
     [GET_LEADERBOARD_QUERY_KEY, userName],
     async () => {
       return UserClient.getLeaderboard(userName);

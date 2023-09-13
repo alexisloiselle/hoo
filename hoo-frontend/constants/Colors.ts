@@ -4,6 +4,9 @@ const Colors = {
   lightPrimary: "#2cbcd4",
   neutral: "#5a6c68",
   accent: "#d0a667",
+  lightGrey: "#c5c6d0",
+  grey: "#808080",
+  darkGrey: "#373737"
 };
 
 export default Colors;

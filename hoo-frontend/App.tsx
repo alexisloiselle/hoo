@@ -13,14 +13,15 @@ import PosoFormScreen from "./screens/PosoForm";
 import OwlSvg from "./components/OwlSvg";
 import ProfileSvg from "./components/ProfileSvg";
 import LeaderboardSvg from "./components/LeadeboardSvg";
+import Colors from "./constants/Colors";
 
 const Tab = createBottomTabNavigator();
 const queryClient = new QueryClient();
 const CommonTabBarOptions = {
-  tabBarActiveTintColor: "red",
-  tabBarInactiveTintColor: "green",
-  tabBarActiveBackgroundColor: "blue",
-  tabBarInactiveBackgroundColor: "yellow",
+  tabBarActiveTintColor: Colors.accent,
+  tabBarInactiveTintColor: Colors.neutral,
+  tabBarActiveBackgroundColor: Colors.lightPrimary,
+  tabBarInactiveBackgroundColor: Colors.lightestPrimary,
 };
 
 const App = () => {
@@ -67,6 +68,7 @@ const App = () => {
                 component={PosoFormScreen}
                 options={{
                   ...CommonTabBarOptions,
+                  headerShown: false,
                   tabBarLabel: "Poso",
                   tabBarIcon: ({ color }) => (
                     <ProfileSvg color={color} size={25} />
