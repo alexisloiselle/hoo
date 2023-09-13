@@ -1,0 +1,18 @@
+interface User {
+  id: number;
+  age: number;
+  weight: number;
+  activityLevel: string;
+  gender: string;
+  region: string;
+  score: number;
+  character: string;
+  token: string;
+  createdAt: string;
+  updatedAt: string;
+  goalMlPerDay: number;
+  currentMlLevel: number;
+  percentile: number;
+}
+
+export default User;

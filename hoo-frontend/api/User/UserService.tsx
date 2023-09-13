@@ -1,8 +1,16 @@
-import { User } from "./User";
+import { UserClient } from "./UserClient";
 import { useQuery } from "react-query";
+import User from "../../models/User";
 
 export interface userHook {
-  user?: any;
+  user?: User;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+}
+
+export interface usersHook {
+  users?: User[];
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
@@ -10,12 +18,16 @@ export interface userHook {
 
 export const GET_USER_QUERY_KEY = "getUser";
 export const GET_LEADERBOARD_QUERY_KEY = "getLeaderboard";
+export const POST_HYDRATION_QUERY_KEY = "postHydration";
+export const POST_CREATE_USER_QUERY_KEY = "postCreateUser";
+export const POST_DELETE_USER_QUERY_KEY = "deleteUser";
+export const PATCH_USER_QUERY_KEY = "patchUser";
 
 export const useUser = (userName: string): userHook => {
   const { data, isLoading, isError, isSuccess } = useQuery(
     [GET_USER_QUERY_KEY, userName],
     async () => {
-      return User.getUser(userName);
+      return UserClient.getUser(userName);
     }
   );
 
@@ -27,11 +39,87 @@ export const useUser = (userName: string): userHook => {
   };
 };
 
-export const useLeaderBoard = (userName: string): userHook => {
+export const useLeaderBoard = (userName: string): usersHook => {
   const { data, isLoading, isError, isSuccess } = useQuery(
     [GET_LEADERBOARD_QUERY_KEY, userName],
     async () => {
-      return User.getLeaderboard(userName);
+      return UserClient.getLeaderboard(userName);
+    }
+  );
+
+  return {
+    users: data,
+    isLoading,
+    isError,
+    isSuccess,
+  };
+};
+
+export const useCreateUser = (
+  username: string,
+  age: number,
+  gender: string,
+  weight: number,
+  region: string
+): userHook => {
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    [POST_CREATE_USER_QUERY_KEY, username, age, gender, weight, region],
+    async () => {
+      return UserClient.postCreateUser(username, age, gender, weight, region);
+    }
+  );
+
+  return {
+    user: data,
+    isLoading,
+    isError,
+    isSuccess,
+  };
+};
+
+export const useHydration = (username: string): userHook => {
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    [POST_HYDRATION_QUERY_KEY, username],
+    async () => {
+      return UserClient.postHydration(username);
+    }
+  );
+
+  return {
+    user: data,
+    isLoading,
+    isError,
+    isSuccess,
+  };
+};
+
+export const useDeleteUser = (username: string): userHook => {
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    [POST_DELETE_USER_QUERY_KEY, username],
+    async () => {
+      return UserClient.deleteUser(username);
+    }
+  );
+
+  return {
+    user: data,
+    isLoading,
+    isError,
+    isSuccess,
+  };
+};
+
+export const useUpdateUser = (
+  username: string,
+  age: number,
+  gender: string,
+  weight: number,
+  region: string
+): userHook => {
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    [PATCH_USER_QUERY_KEY, username, age, gender, weight, region],
+    async () => {
+      return UserClient.postCreateUser(username, age, gender, weight, region);
     }
   );
 

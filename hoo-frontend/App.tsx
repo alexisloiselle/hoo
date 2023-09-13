@@ -1,13 +1,11 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import ProfileScreen from "./screens/Profile";
 import HomeScreen from "./screens/HomeScreen";
 import LeaderboardScreen from "./screens/Leaderboard";
 import AuthenticationProvider from "./providers/AuthenticationProvider";
-
-import * as Notifications from "expo-notifications";
 import { NotificationsProvider } from "./providers/notifications";
 
 const Tab = createBottomTabNavigator();
