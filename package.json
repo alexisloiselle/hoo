@@ -1,7 +1,6 @@
 {
   "name": "hoo",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "Alexis Loiselle <alexis@t-b.ca>",
   "license": "MIT"
 }
