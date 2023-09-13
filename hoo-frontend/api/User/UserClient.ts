@@ -1,3 +1,4 @@
+import Leaderboard from "../../models/Leaderboard";
 import User from "../../models/User";
 import HttpClient from "./HttpClient";
 
@@ -12,7 +13,7 @@ export class UserClient {
     return response.data;
   }
 
-  public static async getLeaderboard(userName: string): Promise<User[]> {
+  public static async getLeaderboard(userName: string): Promise<Leaderboard> {
     const client = new HttpClient({
       endpoint: `/users/${userName}/leaderboard`,
     });

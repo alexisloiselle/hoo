@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import ProfileScreen from "./screens/Profile";
 import HomeScreen from "./screens/HomeScreen";
-import LeaderboardScreen from "./screens/Leaderboard";
+import LeaderboardScreen from "./screens/LeaderboardScreen";
 import AuthenticationProvider from "./providers/AuthenticationProvider";
 import { NotificationsProvider } from "./providers/notifications";
 import PosoFormScreen from "./screens/PosoForm";

@@ -1,6 +1,7 @@
 import { UserClient } from "./UserClient";
 import { useMutation, useQuery } from "react-query";
 import User from "../../models/User";
+import Leaderboard from "../../models/Leaderboard";
 
 export interface userHook {
   user?: User;
@@ -11,6 +12,13 @@ export interface userHook {
 
 export interface usersHook {
   users?: User[];
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+}
+
+export interface leaderboardHook {
+  leaderboard?: Leaderboard;
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
@@ -43,7 +51,7 @@ export const useUser = (userName: string): userHook => {
   };
 };
 
-export const useLeaderBoard = (userName: string): usersHook => {
+export const useLeaderBoard = (userName: string): leaderboardHook => {
   const { data, isLoading, isError, isSuccess } = useQuery(
     [GET_LEADERBOARD_QUERY_KEY, userName],
     async () => {
@@ -52,7 +60,7 @@ export const useLeaderBoard = (userName: string): usersHook => {
   );
 
   return {
-    users: data,
+    leaderboard: data,
     isLoading,
     isError,
     isSuccess,
