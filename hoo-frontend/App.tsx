@@ -2,7 +2,6 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { User } from './api/User/User';
-import useUser, { userHook } from './api/User/UserService';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import ProfileScreen from "./screens/Profile";
 import HomeScreen from "./screens/HomeScreen";
