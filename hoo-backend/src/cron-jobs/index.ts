@@ -8,13 +8,19 @@ export const initCronJobs = () => {
     const users = await prisma.user.findMany();
 
     for (const user of users) {
+      const newHydrationPercentage = Math.min(
+        100,
+        Math.max(0, user.hydrationPercentage - 2)
+      );
+
+      if (user.hydrationPercentage > 10 && newHydrationPercentage <= 10) {
+        // Send notification
+      }
+
       await prisma.user.update({
         where: { id: user.id },
         data: {
-          hydrationPercentage: Math.min(
-            100,
-            Math.max(0, user.hydrationPercentage - 2)
-          ),
+          hydrationPercentage: newHydrationPercentage,
         },
       });
     }

@@ -7,6 +7,9 @@ import HomeScreen from "./screens/HomeScreen";
 import LeaderboardScreen from "./screens/Leaderboard";
 import AuthenticationProvider from "./providers/AuthenticationProvider";
 
+import * as Notifications from "expo-notifications";
+import { NotificationsProvider } from "./providers/notifications";
+
 const Tab = createBottomTabNavigator();
 
 const queryClient = new QueryClient();
@@ -15,13 +18,15 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthenticationProvider>
-        <NavigationContainer>
-          <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
-          </Tab.Navigator>
-        </NavigationContainer>
+        <NotificationsProvider>
+          <NavigationContainer>
+            <Tab.Navigator>
+              <Tab.Screen name="Home" component={HomeScreen} />
+              <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
+              <Tab.Screen name="Profile" component={ProfileScreen} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </NotificationsProvider>
       </AuthenticationProvider>
     </QueryClientProvider>
   );

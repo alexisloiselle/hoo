@@ -6,7 +6,7 @@ export interface AuthenticationProviderState {
 }
 
 const initialState = {
-  user: undefined,
+  username: undefined,
   setUsername: () => {},
 };
 
@@ -14,7 +14,7 @@ export const AuthenticationContext =
   createContext<AuthenticationProviderState>(initialState);
 
 const AuthenticationProvider = ({ children }) => {
-  const [username, setUsername] = useState<string | undefined>("Alexis");
+  const [username, setUsername] = useState<string | undefined>("alexis");
 
   return (
     <AuthenticationContext.Provider

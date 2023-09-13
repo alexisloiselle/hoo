@@ -5,8 +5,9 @@ import {
 } from "@prisma/client/runtime/library";
 import express from "express";
 
-import { computeLiters } from "./utils/user";
+import { computeMl } from "./utils/user";
 import { initCronJobs } from "./cron-jobs";
+import { NotificationsService } from "./services/notifications";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -32,7 +33,7 @@ app.post("/users", async (req, res) => {
         weight,
       },
     });
-    return res.json(computeLiters(user));
+    return res.json(computeMl(user));
   } catch (e) {
     console.error(e);
 
@@ -70,7 +71,7 @@ app.get("/users/:username", async (req, res) => {
     }, 0);
 
     res.json({
-      ...computeLiters(currentUser),
+      ...computeMl(currentUser),
       percentile: Number(
         (((numberOfPeopleBetterThanU + 1) / users.length) * 100).toFixed(0)
       ),
@@ -99,7 +100,7 @@ app.patch("/users/:username", async (req, res) => {
       data: { activityLevel, age, gender, region, weight },
     });
 
-    res.json(computeLiters(user));
+    res.json(computeMl(user));
   } catch (e) {
     console.error(e);
 
@@ -176,11 +177,11 @@ app.get("/users/:username/leaderboard", async (req, res) => {
 
     res.json({
       best: users.slice(0, 5).map((user, index) => ({
-        ...computeLiters(user),
+        ...computeMl(user),
         position: index + 1,
       })),
       me: {
-        ...computeLiters(users[meIndex]),
+        ...computeMl(users[meIndex]),
         position: meIndex + 1,
       },
     });
@@ -195,6 +196,43 @@ app.get("/users/:username/leaderboard", async (req, res) => {
     }
 
     return res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+app.put("/token/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { username } = req.body;
+
+    await prisma.user.update({
+      where: { username },
+      data: { token },
+    });
+
+    res.status(204).send();
+  } catch (e) {
+    console.error(e);
+
+    if (
+      e instanceof PrismaClientValidationError ||
+      e instanceof PrismaClientKnownRequestError
+    ) {
+      return res.status(400).json({ message: e.message });
+    }
+
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+app.post("/test", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    await NotificationsService.sendNotification(token, "Test", "Test");
+    res.status(204);
+  } catch (e) {
+    console.error(JSON.stringify(e));
+    res.status(500).json(e);
   }
 });
 

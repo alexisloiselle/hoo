@@ -6,41 +6,41 @@ type User = {
   weight: number;
 };
 
-type WithLiters<T> = T extends null
+type WithMl<T> = T extends null
   ? null
   : Omit<T, "hydrationPercentage"> & {
-      goalLitersPerDay: number;
-      currentLitersLevel: number;
+      goalMlPerDay: number;
+      currentMlLevel: number;
     };
 
-const litersPerActivityLevel = {
+const mlPerActivityLevel = {
   [ActivityLevel.LOW]: 0,
-  [ActivityLevel.MEDIUM]: 1,
-  [ActivityLevel.HIGH]: 2,
+  [ActivityLevel.MEDIUM]: 1000,
+  [ActivityLevel.HIGH]: 2000,
 };
 
 // 100ml par 10lbs a partir de 125lbs
 // 1.5l de base
 // 1l par niveau d'activité
-export const computeLiters = <T extends User>(
+export const computeMl = <T extends User>(
   user: T | null
-): WithLiters<User | null> => {
+): WithMl<User | null> => {
   if (!user) {
     return null;
   }
 
-  const goalLitersPerDay = Number(
+  const goalMlPerDay = Number(
     (
-      1.5 +
-      litersPerActivityLevel[user.activityLevel] +
-      (0.1 * (user.weight - 125)) / 10
+      1500 +
+      mlPerActivityLevel[user.activityLevel] +
+      (100 * (user.weight - 125)) / 10
     ).toFixed(2)
   );
 
   return {
     ...user,
-    goalLitersPerDay,
-    currentLitersLevel: (user.hydrationPercentage * goalLitersPerDay) / 100,
+    goalMlPerDay: goalMlPerDay,
+    currentMlLevel: (user.hydrationPercentage * goalMlPerDay) / 100,
     hydrationPercentage: undefined,
   };
 };
