@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import Colors from "../constants/Colors";
 import {
   View,
   Text,
@@ -64,7 +65,8 @@ const ProfileScreen = () => {
             source={require("../assets/owl.png")}
             style={styles.profileImage}
           />
-          <Text style={styles.label}>Name: {user.username}</Text>
+          <Text style={styles.label}>Name: </Text>
+          <Text style={styles.name}>{user.username}</Text>
           <Text style={styles.label}>Age: </Text>
           <TextInput
             style={styles.nameInput}
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: Colors.primary,
   },
   profileImage: {
     width: 110,
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     borderWidth: 3,
     borderColor: "#E0E0E0",
+    backgroundColor: Colors.lightPrimary,
   },
   labelContainer: {
     flexDirection: "row",
@@ -150,6 +153,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 10,
     marginTop: 10,
+    color: "white",
   },
   value: {
     fontSize: 16,
@@ -159,12 +163,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 5,
+    color: "white",
   },
   bio: {
     fontSize: 16,
     textAlign: "center",
-    color: "#666",
     marginBottom: 20,
+    color: "white",
   },
   location: {
     fontSize: 16,
@@ -200,6 +205,7 @@ const styles = StyleSheet.create({
     borderColor: "#E0E0E0",
     borderRadius: 4,
     padding: 5,
+    color: "white",
   },
 
   bioInput: {
