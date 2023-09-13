@@ -63,7 +63,7 @@ app.get("/users/:username", async (req, res) => {
     }
 
     const numberOfPeopleBetterThanU = users.reduce((acc, user) => {
-      if (user.hydrationPercentage > currentUser.hydrationPercentage) {
+      if (user.id !== currentUser.id && user.score > currentUser.score) {
         return acc + 1;
       }
 
@@ -73,7 +73,7 @@ app.get("/users/:username", async (req, res) => {
     res.json({
       ...computeMl(currentUser),
       percentile: Number(
-        (((numberOfPeopleBetterThanU + 1) / users.length) * 100).toFixed(0)
+        ((numberOfPeopleBetterThanU / users.length) * 100 + 1).toFixed(0)
       ),
     });
   } catch (e) {
@@ -118,12 +118,27 @@ app.patch("/users/:username", async (req, res) => {
 app.post("/users/:username/hydration", async (req, res) => {
   try {
     const { username } = req.params;
-    const { hydrationPercentage } = req.body;
+    const { hydrationPercentage: sentHydrationPercentage } = req.body;
+
+    const hydrationPercentage = Math.min(
+      100,
+      Math.max(0, sentHydrationPercentage)
+    );
+
+    const user = await prisma.user.findUnique({ where: { username } });
+
+    if (!user) {
+      return res.status(404).send();
+    }
+
+    const newScore =
+      user.score + Math.max(0, hydrationPercentage - user.hydrationPercentage);
 
     await prisma.user.update({
       where: { username },
       data: {
-        hydrationPercentage: Math.min(100, Math.max(0, hydrationPercentage)),
+        hydrationPercentage,
+        score: newScore,
       },
     });
 
@@ -221,18 +236,6 @@ app.put("/token/:token", async (req, res) => {
     }
 
     return res.status(500).json({ error: "Something went wrong" });
-  }
-});
-
-app.post("/test", async (req, res) => {
-  try {
-    const { token } = req.body;
-
-    await NotificationsService.sendNotification(token, "Test", "Test");
-    res.status(204);
-  } catch (e) {
-    console.error(JSON.stringify(e));
-    res.status(500).json(e);
   }
 });
 
