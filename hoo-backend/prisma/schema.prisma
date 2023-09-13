@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ActivityLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  IN_BETWEEN
+}
+
+model User {
+  id                  Int           @id @default(autoincrement())
+  username            String        @unique
+  age                 Int
+  weight              Int
+  activityLevel       ActivityLevel @default(MEDIUM)
+  gender              Gender
+  region              String
+  score               Int           @default(0)
+  hydrationPercentage Float         @default(50)
+  character           String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @default(now()) @updatedAt
+}
