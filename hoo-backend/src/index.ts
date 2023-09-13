@@ -258,8 +258,7 @@ app.get("/users/:username/bio", async (req, res) => {
       He lives in ${user.region}.
       He considers his gender to be ${user.gender}.
       ${thirstLevel}
-    `,
-      "long"
+    `
     );
 
     res.json({
@@ -308,8 +307,7 @@ app.put("/token/:token", async (req, res) => {
 app.get("/qotd", async (_req, res) => {
   try {
     const qotd = await GptService.prompt(
-      "Generate a short motivational quote of the to encourage drinking water.",
-      "long"
+      "Generate a short motivational quote of the to encourage drinking water."
     );
     res.json({ qotd });
   } catch (e) {

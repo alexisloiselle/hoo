@@ -4,7 +4,7 @@ const apiKey = process.env.CHATGPT_API_KEY;
 const apiUrl = "https://api.openai.com/v1/chat/completions";
 
 export class GptService {
-  static async prompt(prompt: string, length: "long" | "short" = "short") {
+  static async prompt(prompt: string) {
     const response = await axios.post(
       apiUrl,
       {
@@ -19,7 +19,6 @@ export class GptService {
         `,
           },
         ],
-        max_tokens: length === "short" ? 10 : undefined,
       },
       {
         headers: {
