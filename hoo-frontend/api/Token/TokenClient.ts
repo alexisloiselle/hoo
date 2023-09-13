@@ -1,6 +1,6 @@
-import HttpClient from "./HttpClient";
+import HttpClient from "../HttpClient";
 
-export class Token {
+export class TokenClient {
   public static async putToken(token: string, username: string): Promise<any> {
     const client = new HttpClient({
       endpoint: `/token/${token}`,

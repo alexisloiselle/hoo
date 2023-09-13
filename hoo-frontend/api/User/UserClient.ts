@@ -1,6 +1,6 @@
 import Leaderboard from "../../models/Leaderboard";
 import User from "../../models/User";
-import HttpClient from "./HttpClient";
+import HttpClient from "../HttpClient";
 
 export class UserClient {
   public static async getUser(userName: string): Promise<User> {

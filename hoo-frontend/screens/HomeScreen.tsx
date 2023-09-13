@@ -6,7 +6,7 @@ import HydrationIndicator, {
 import Colors from "../constants/Colors";
 import { AuthenticationContext } from "../providers/AuthenticationProvider";
 import { useUser } from "../api/User/UserService";
-import FillSvg from "../components/FillSvg";
+import { Qotd } from "../components/Qotd";
 
 const HomeScreen = () => {
   const { username } = useContext(AuthenticationContext);
@@ -21,6 +21,7 @@ const HomeScreen = () => {
         backgroundColor: Colors.primary,
       }}
     >
+      <Qotd />
       {!isLoading ? (
         <HydrationIndicator user={user} />
       ) : (
