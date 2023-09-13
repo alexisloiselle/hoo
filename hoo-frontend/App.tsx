@@ -16,6 +16,7 @@ import ProfileSvg from "./components/ProfileSvg";
 import LeaderboardSvg from "./components/LeadeboardSvg";
 import Colors from "./constants/Colors";
 import { LeaderboardEntry } from "./screens/LeaderboardEntry";
+import { MoreScreen } from "./screens/MoreScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,6 +96,16 @@ const App = () => {
                   tabBarIcon: ({ color }) => (
                     <ProfileSvg color={color} size={25} />
                   ),
+                }}
+              />
+              <Tab.Screen
+                name="More"
+                component={MoreScreen}
+                options={{
+                  ...CommonTabBarOptions,
+                  headerShown: false,
+                  tabBarLabel: "More",
+                  tabBarIcon: ({ color }) => <OwlSvg color={color} size={25} />,
                 }}
               />
             </Tab.Navigator>
