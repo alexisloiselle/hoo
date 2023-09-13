@@ -10,6 +10,8 @@ interface LeaderboardRowProps {
 }
 
 const LeaderboardRow = ({ user }: LeaderboardRowProps) => {
+  if (!user) return null;
+
   return (
     <View
       style={{
@@ -45,7 +47,9 @@ const LeaderboardScreen = () => {
   const { username } = useContext(AuthenticationContext);
   const { leaderboard } = useLeaderBoard(username);
 
-  const isCurrentUserLeader = leaderboard?.me.position <= 5;
+  if (!leaderboard) return null;
+
+  const isCurrentUserLeader = leaderboard.me.position <= 5;
 
   return (
     <View
