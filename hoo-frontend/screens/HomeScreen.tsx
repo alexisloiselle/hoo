@@ -6,10 +6,14 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import FillSvg from "../components/FillSvg";
+import useUser from "../api/User/UserService";
 
 const HomeScreen = () => {
   const [currentValue, setCurrentValue] = useState(1000);
   const maxValue = 2000;
+
+  const{user} = useUser(1)
+  console.log(user)
 
   return (
     <View
