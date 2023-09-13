@@ -7,7 +7,7 @@ import express from "express";
 
 import { computeMl } from "./utils/user";
 import { initCronJobs } from "./cron-jobs";
-import { NotificationsService } from "./services/notifications";
+import { GptService } from "./services/gpt";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -235,6 +235,19 @@ app.put("/token/:token", async (req, res) => {
       return res.status(400).json({ message: e.message });
     }
 
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+app.get("/qotd", async (_req, res) => {
+  try {
+    const qotd = await GptService.prompt(
+      "Generate a motivational quote of the to encourage drinking water.",
+      "long"
+    );
+    res.json({ qotd });
+  } catch (e) {
+    console.error(e);
     return res.status(500).json({ error: "Something went wrong" });
   }
 });
